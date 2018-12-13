@@ -30,8 +30,12 @@ RUN mkdir $APPS_HOME
 
 WORKDIR $APPS_HOME
 
-RUN git clone https://github.com/TeriForey/$APP_NAME.git
+RUN git clone https://github.com/TeriForey/$APP_NAME.git \
+  && printf '#!/bin/bash\n' > alignwise \
+  && echo $DEST/AlignWise.pl' $*' >> alignwise \
+  && chmod +x alignwise \
+  && mv alignwise /bin
 
-WORKDIR $DEST
+WORKDIR /home
 
-ENTRYPOINT ["./AlignWise.pl"]
+ENTRYPOINT ["alignwise"]
